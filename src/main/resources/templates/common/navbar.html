@@ -4,8 +4,13 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
   <nav class="navbar  navbar-light" id="sidebar2" th:fragment="header" style="background-color: #DF6D14;">
     <div class="d-flex flex-row-reverse ms-auto">
-      <div class="p-2"> <a class="navbar-brand" href="#">NL</a></div>
-      <div class="p-2"> <a class="navbar-brand" href="#">FR</a></div>
+      <div class="p-2">
+          <select id="locales">
+              <option value="nl" th:text="NL" ></option>
+              <option th:if="__${#locale}__=='fr'" value="fr" th:text="FR" selected ></option>
+              <option th:unless="__${#locale}__=='fr'" value="fr" th:text="FR" ></option>
+          </select>
+      </div>
       <div class="p-2 dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button"
              data-bs-toggle="dropdown" aria-expanded="false" style="color: #000000;">
@@ -22,6 +27,18 @@
 
       </div>
     </div>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+      </script>
+      <script type="text/javascript">
+          $(document).ready(function() {
+              $("#locales").change(function () {
+                  var selectedOption = $('#locales').val();
+                  if (selectedOption != ''){
+                      window.location.replace('?lang=' + selectedOption);
+                  }
+              });
+          });
+      </script>
 
   </nav>
 
