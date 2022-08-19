@@ -7,7 +7,7 @@ public enum Category {
     SANDWICH("Sandwich"),
     MEAT_LOVER("MEAT LOVER"),
     STARTER("Starter"),
-    DESERT("DESERT");
+    DESSERT("DESSERT");
 
     private final String label;
 
