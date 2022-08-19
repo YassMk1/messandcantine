@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns="http://www.w3.org/1999/html">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <title>All Users</title>
+</head>
+<body>
+<nav th:replace="common/navbar :: header"/>
+</br>
+
+<div class="d-flex p-4 justify-content-center">
+    <div class="card text-center ">
+        <div class="card-header">
+            <a sec:authorize="hasRole('ROLE_COOKER')" th:text="#{allMyArticles.title}"></a>
+            <a sec:authorize="hasRole('ROLE_ADMIN')" th:text="#{allArticles.title}"></a>
+        </div>
+        <div class="card-body">
+            <div class="row">
+
+                <div class="p-4 d-flex justify-content-left">
+                    <a sec:authorize="hasRole('ROLE_COOKER')" class="btn btn-primary" style="width: 10rem;" type="button" th:href="@{/article/new}">Add new article</a>
+                </div>
+
+                <table id="dtBasicExample" class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th scope="col">name</th>
+                        <th scope="col">Description </th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Cooker</th>
+                        <th scope="col">removed</th>
+                        <th scope="col">Nbr of images</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr data-th-each="art : ${articles}">
+                        <td></td>
+                        <td>[[${art.name}]]</td>
+                        <td>[[${art.description}]]</td>
+                        <td>[[${art.category}]]</td>
+                        <td>[[${art.cooker.firstName} + ' ' +${art.cooker.lastName} ]]</td>
+                        <td>[[${art.removed}]]</td>
+                        <td>[[${art.images.size()}]]</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+
+</body>
+</html>

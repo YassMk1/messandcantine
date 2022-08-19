@@ -52,6 +52,14 @@ public class UserServiceImpl implements UserService {
         }
         return  null ;
     }
+    @Override
+    public UserRegistered getConnectedCooker() {
+        UserRegistered cooker = getConnectedUser() ;
+        if (cooker != null && cooker.getRole() == UserRegistered.Role.COOKER){
+            return cooker ;
+        }
+        return  null ;
+    }
 
     @Override
     public UserRegistered getConnectedUser() {

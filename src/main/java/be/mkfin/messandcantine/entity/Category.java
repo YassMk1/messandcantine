@@ -3,7 +3,8 @@ package be.mkfin.messandcantine.entity;
 public enum Category {
 
     VEGAN("VEGAN"),
-    VIGIE("VIGIE"),
+    DRINK("Drink"),
+    SANDWICH("Sandwich"),
     MEAT_LOVER("MEAT LOVER"),
     STARTER("Starter"),
     DESERT("DESERT");

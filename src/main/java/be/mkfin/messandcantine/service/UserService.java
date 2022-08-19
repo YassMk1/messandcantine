@@ -15,6 +15,7 @@ public interface UserService {
     UserRegistered save(UserRegistered user);
 
     UserRegistered getConnectedEmployee();
+    UserRegistered getConnectedCooker();
     UserRegistered getConnectedUser();
 
 }
