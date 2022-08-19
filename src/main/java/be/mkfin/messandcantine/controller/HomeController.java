@@ -1,6 +1,7 @@
 package be.mkfin.messandcantine.controller;
 
 
+import be.mkfin.messandcantine.entity.UserRegistered;
 import be.mkfin.messandcantine.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,25 +17,33 @@ import javax.servlet.http.HttpSession;
 public class HomeController {
 
     @Autowired
-    private UserService userService ;
+    private UserService userService;
 
     @RequestMapping(value = "", method = {RequestMethod.GET, RequestMethod.POST})
     public String home(Model model) {
-        if (userService.isAuthenticated()){
-            return "index" ;
-        }else {
+        if (userService.isAuthenticated()) {
+            return "index";
+        } else {
             return "sign-in";
         }
     }
 
     @GetMapping(path = "/login-error")
     public String loginError(Model model) {
-            return "error";
+        model.addAttribute("errorLogin","LoginError") ;
+        return "sign-in";
+
+    }
+
+    @GetMapping(path = "/subscribe")
+    public String subscribe(Model model) {
+        model.addAttribute("user", new UserRegistered());
+        return "subscribe";
 
     }
 
     @GetMapping("logout")
-    public String logout(HttpServletRequest request){
+    public String logout(HttpServletRequest request) {
         HttpSession httpSession = request.getSession();
         httpSession.invalidate();
         return "redirect:/";

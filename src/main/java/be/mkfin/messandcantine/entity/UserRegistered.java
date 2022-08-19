@@ -9,10 +9,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+
+import static be.mkfin.messandcantine.entity.UserRegistered.Role.COOKER;
+import static be.mkfin.messandcantine.entity.UserRegistered.Role.EMPLOYEE;
 
 @Entity(name = "user_registered")
 @Getter
@@ -102,6 +102,10 @@ public  class UserRegistered implements UserDetails, Serializable {
             return "ROLE_" + name();
         }
 
+    }
+
+    public static Role[] getRolesForSubscription(){
+        return new Role[]{EMPLOYEE,COOKER};
     }
 
 }

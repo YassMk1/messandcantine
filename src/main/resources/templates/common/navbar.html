@@ -11,10 +11,10 @@
               <option th:unless="__${#locale}__=='fr'" value="fr" th:text="FR" ></option>
           </select>
       </div>
-      <div class="p-2 dropdown">
+      <div sec:authorize="isAuthenticated()"  class="p-2 dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button"
              data-bs-toggle="dropdown" aria-expanded="false" style="color: #000000;">
-            Profile
+              <span class="navbar-brand"  sec:authentication="principal.username"></span>
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
             <li><a class="dropdown-item" href="#">Action</a></li>
@@ -22,7 +22,7 @@
             <li>
               <hr class="dropdown-divider">
             </li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
+            <li> <a class="dropdown-item" href="/logout/">Log out</a></li>
           </ul>
 
       </div>

@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -30,14 +31,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void save(UserRegistered user) {
+    public UserRegistered save(UserRegistered user) {
         if (user.getUsername().startsWith(",")) {
             user.setUsername(user.getUsername().replaceAll(",", ""));
         }
-        user.setPassword(encoder.encode("Welcome@MessAndCantine_PleaseChangeMeASAP"));
-
-        repository.save(user);
-
+        // Generate the token
+        String token = UUID.randomUUID().toString();
+        user.setToken(token); // ça sera utilisé plutard pour valider les adresse mails
+        user.setActive(true); // tout les nouveaux utilisateurs sont active pour le moment, on doit switcher ce field à false lorsque on introduit la validation du boite mail.
+        user.setPassword(encoder.encode(user.getPassword()));
+        user.setPhone(user.getPhone().replaceAll("-",""));
+       return  repository.save(user);
     }
 
     @Override

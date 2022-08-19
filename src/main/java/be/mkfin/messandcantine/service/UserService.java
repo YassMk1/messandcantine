@@ -8,11 +8,11 @@ import java.util.List;
 public interface UserService {
 
 
-    boolean isAuthenticated();
+     boolean isAuthenticated();
 
-    List<UserRegistered> getAllUsers();
+     List<UserRegistered> getAllUsers();
 
-    void save(UserRegistered user);
+    UserRegistered save(UserRegistered user);
 
     UserRegistered getConnectedEmployee();
     UserRegistered getConnectedUser();
