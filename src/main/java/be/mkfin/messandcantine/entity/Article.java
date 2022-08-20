@@ -18,7 +18,7 @@ public class Article {
     private Long id;
     @Column(length = 60, nullable = false)
     private String name;
-    @Column(nullable = false, columnDefinition="TEXT")
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
 
     @Column(length = 45)
@@ -34,5 +34,18 @@ public class Article {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "article")
     private Set<Image> images;
+
+    public Image getMainImage() {
+        if (images != null && !images.isEmpty()) {
+            Image mainImage = images.iterator().next();
+            return images.stream().filter(img -> img.isProfile()).findFirst().orElse(mainImage);
+        }
+        return new Image();
+    }
+
+    public boolean haveImage() {
+        return images != null && ! images.isEmpty();
+
+    }
 
 }
