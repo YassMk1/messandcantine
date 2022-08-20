@@ -45,4 +45,9 @@ public class ArticleServiceImpl implements ArticleService {
         }
         return articleRepository.findAllByCooker(coocker);
     }
+
+    @Override
+    public Article findArticleById(Long id) {
+        return articleRepository.findById(id).orElse(null);
+    }
 }

@@ -35,6 +35,9 @@ public class Article {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "article")
     private Set<Image> images;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "article")
+    private Set<Availability> availabilities;
+
     public Image getMainImage() {
         if (images != null && !images.isEmpty()) {
             Image mainImage = images.iterator().next();

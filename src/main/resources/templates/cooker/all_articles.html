@@ -26,7 +26,7 @@
             <div class="row">
 
                 <div class="p-4 d-flex justify-content-left">
-                    <a sec:authorize="hasRole('ROLE_COOKER')" class="btn btn-primary" style="width: 10rem;" type="button" th:href="@{/article/new}">Add new article</a>
+                    <a sec:authorize="hasRole('ROLE_COOKER')" class="btn btn-primary"  th:href="@{/article/new}">Add new article</a>
                 </div>
 
                 <table id="dtBasicExample" class="table table-bordered">
@@ -39,6 +39,7 @@
                         <th scope="col">Cooker</th>
                         <th scope="col">removed</th>
                         <th scope="col">Nbr of images</th>
+                        <th>Actions</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -56,6 +57,10 @@
                         <td>[[${art.cooker.firstName} + ' ' +${art.cooker.lastName} ]]</td>
                         <td>[[${art.removed}]]</td>
                         <td>[[${art.images.size()}]]</td>
+                        <td>
+                            <a sec:authorize="hasRole('ROLE_COOKER')" class="btn  btn-success"   th:href="${'/article/edit/'+art.id}">Edit</a>
+                            <a sec:authorize="hasRole('ROLE_COOKER')" class="btn  btn-success"   th:href="${'/article/newavail/'+art.id}">New Availibility</a>
+                        </td>
                     </tr>
                     </tbody>
                 </table>

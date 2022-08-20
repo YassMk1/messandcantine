@@ -2,6 +2,7 @@ package be.mkfin.messandcantine.controller.cooker;
 
 
 import be.mkfin.messandcantine.entity.Article;
+import be.mkfin.messandcantine.entity.Availability;
 import be.mkfin.messandcantine.entity.Image;
 import be.mkfin.messandcantine.service.ArticleService;
 import be.mkfin.messandcantine.service.ImageService;
@@ -46,6 +47,47 @@ public class ArticleController {
         return "cooker/new_article";
 
     }
+    @GetMapping(path = "article/view/{id}")
+    public String getArticle(@PathVariable Long id , Model model) {
+        Article articleById = articleService.findArticleById(id);
+        if(articleById == null){
+            throw new IllegalArgumentException("Can't find that article ");
+        }
+        if (articleById.haveImage()){
+            articleById.getImages().stream().forEach(image -> setFullUrlImg(image));
+        }
+        model.addAttribute("article", articleById);
+        return "cooker/article";
+
+    }
+
+    @GetMapping(path = "article/edit/{id}")
+    public String editArticle(@PathVariable Long id , Model model) {
+        Article articleById = articleService.findArticleById(id);
+        if(articleById == null){
+            throw new IllegalArgumentException("Can't find that article ");
+        }
+        model.addAttribute("article", articleById);
+        return "cooker/new_article";
+
+    }
+
+    @GetMapping(path = "article/newavail/{id}")
+    public String addNewAvailabilityArticle(@PathVariable Long id , Model model) {
+        Article articleById = articleService.findArticleById(id);
+        if(articleById == null){
+            throw new IllegalArgumentException("Can't find that article ");
+        }
+        if (articleById.haveImage()){
+            articleById.getImages().stream().forEach(image -> setFullUrlImg(image));
+        }
+        model.addAttribute("article", articleById);
+        Availability availability = new Availability();
+        availability.setArticle(articleById);
+        model.addAttribute("availability", availability);
+        return "cooker/new_availability_article";
+
+    }
 
     @PostMapping("/article/new")
     public String newArticle(Article article,  @RequestParam("file") MultipartFile file,
@@ -72,7 +114,7 @@ public class ArticleController {
         } else {
             Image image = null;
             article = articleService.save(article);
-            if (file != null) {
+            if (file != null && ! file.isEmpty()) {
                 Image image1 = new Image();
                 if (article.getImages() == null ||article.getImages().isEmpty() ) {
                     // the first image is always the main image

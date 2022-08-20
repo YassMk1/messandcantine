@@ -12,4 +12,6 @@ public interface ArticleService {
     Article save(Article article);
 
     List<Article> getArticlesOfConnectedCoocker();
+
+    Article findArticleById(Long id);
 }

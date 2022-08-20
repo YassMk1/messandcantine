@@ -23,11 +23,14 @@
             <div class="row">
 
                 <div class=" col-lg-offset-2">
-                    <form  th:action="@{/article/new}" th:method="post" enctype="multipart/form-data" class="form-horizontal" th:object="${article}">
+                    <form th:action="@{/article/new}" th:method="post" enctype="multipart/form-data"
+                          class="form-horizontal" th:object="${article}">
+                        <input type="hidden" th:field="*{id}">
                         <div class="form-group row">
                             <label for="name" class="col-sm-3 control-label">Name</label>
                             <div class="col-sm-8">
-                                <input id= "name" class="form-control" type="text"  th:field="*{name}" placeholder="Enter your article name" />
+                                <input id="name" class="form-control" type="text" th:field="*{name}"
+                                       placeholder="Enter your article name"/>
                                 <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
                             </div>
                         </div>
@@ -35,15 +38,19 @@
                         <div class="form-group row">
                             <label for="description" class="col-sm-3 control-label">Description</label>
                             <div class="col-sm-8">
-                                <textarea  id="description" class="form-control"  rows="6" th:field="*{description}" th:placeholder="#{article.form.description}"></textarea>
-                                <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
+                                <textarea id="description" class="form-control" rows="6" th:field="*{description}"
+                                          th:placeholder="#{article.form.description}"
+                                          style="white-space: pre-wrap;"></textarea>
+                                <span th:if="${#fields.hasErrors('description')}"
+                                      th:errors="*{description}"></span>
                             </div>
                         </div>
 
                         <div class="form-group row">
                             <label for="category" class="col-sm-3 control-label">Category</label>
                             <div class="col-sm-8">
-                                <select class="form-select mb-3" th:field="*{category}" name="category" id="category" required="required">
+                                <select class="form-select mb-3" th:field="*{category}" name="category"
+                                        id="category" required="required">
                                     <option th:each="cat : ${T(be.mkfin.messandcantine.entity.Category).values()}"
                                             th:value="${cat}"
                                             th:text="${cat}"></option>
@@ -62,7 +69,8 @@
                         <div class="form-group">
                             </br>
                             <div class="col-sm-offset-3 col-sm-6">
-                                <button type="submit" class="btn btn-success" th:text="#{registration.form.save}"></button>
+                                <button type="submit" class="btn btn-success"
+                                        th:text="#{registration.form.save}"></button>
                             </div>
                         </div>
                     </form>
