@@ -5,7 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Setter
 @Getter
@@ -49,6 +51,12 @@ public class Article {
     public boolean haveImage() {
         return images != null && ! images.isEmpty();
 
+    }
+
+    public List<Availability> getAvailabilitiesForCommand(){
+        return availabilities.stream()
+                .filter(avail -> avail.getNbreOrder() != 0)
+                .collect(Collectors.toList());
     }
 
 }

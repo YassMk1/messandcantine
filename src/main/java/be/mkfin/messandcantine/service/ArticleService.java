@@ -14,4 +14,6 @@ public interface ArticleService {
     List<Article> getArticlesOfConnectedCoocker();
 
     Article findArticleById(Long id);
+
+    List<Article> getArticlesWithAvailability();
 }

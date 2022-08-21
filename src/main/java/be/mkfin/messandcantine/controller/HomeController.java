@@ -22,6 +22,9 @@ public class HomeController {
     @RequestMapping(value = "", method = {RequestMethod.GET, RequestMethod.POST})
     public String home(Model model) {
         if (userService.isAuthenticated()) {
+           if( userService.getConnectedEmployee() != null){
+               return "redirect:/command/articles" ;
+           }
             return "index";
         } else {
             return "sign-in";

@@ -4,16 +4,16 @@ package be.mkfin.messandcantine.controller.cooker;
 import be.mkfin.messandcantine.entity.Article;
 import be.mkfin.messandcantine.entity.Availability;
 import be.mkfin.messandcantine.entity.Image;
+import be.mkfin.messandcantine.entity.UserRegistered;
 import be.mkfin.messandcantine.service.ArticleService;
 import be.mkfin.messandcantine.service.ImageService;
 import be.mkfin.messandcantine.service.StorageService;
+import be.mkfin.messandcantine.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,7 +24,6 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.nio.file.Path;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Stream;
@@ -33,6 +32,8 @@ import java.util.stream.Stream;
 public class ArticleController {
 
 
+    @Autowired
+    private UserService userService;
     @Autowired
     private ArticleService articleService;
 
@@ -64,8 +65,15 @@ public class ArticleController {
     @GetMapping(path = "article/edit/{id}")
     public String editArticle(@PathVariable Long id , Model model) {
         Article articleById = articleService.findArticleById(id);
+
+
+
         if(articleById == null){
             throw new IllegalArgumentException("Can't find that article ");
+        }
+        UserRegistered userRegistered = userService.getConnectedUser();
+        if( userRegistered.getId() != articleById.getCooker().getId()){
+            throw new IllegalArgumentException("Access denieded: This article can  be edited only by its owner !  ");
         }
         model.addAttribute("article", articleById);
         return "cooker/new_article";

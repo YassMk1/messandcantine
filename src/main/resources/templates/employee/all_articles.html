@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns="http://www.w3.org/1999/html">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <title> Mess And Cantine</title>
+</head>
+<body>
+<nav th:replace="common/navbar :: header"/>
+</br>
+
+<div class="d-flex p-4 justify-content-center">
+    <div class="card text-center ">
+        <div class="card-header">
+            <a th:text="#{allArticles.title}"></a>
+        </div>
+        <table id="dtBasicExample" class="table">
+            <thead>
+            <tr>
+                <th ></th>
+                <th > </th>
+                <th ></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr data-th-each="art : ${articles}">
+                <td class="w-25">
+                    <div class="card mb-3" th:if="${art._1 != null}">
+                        <img th:if="${art._1.haveImage()}" th:src="${art._1.getMainImage().fullUrlImg}"
+                             class="card-img-top"
+                             alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">[[${'['+art._1.category+'] '+art._1.name}]]</h5>
+                            <p class="card-text">[[${art._1.description}]]</p>
+                            <p class="card-text"><small class="text-muted">[[${art._1.cooker.firstName} + ' '
+                                +${art._1.cooker.lastName} ]]</small></p>
+                        </div>
+                        <div class="card-footer" sec:authorize="hasRole('ROLE_EMPLOYEE')" >
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Start date</th>
+                                    <th scope="col">End date </th>
+                                    <th scope="col">Price</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr data-th-each="availability : ${art._1.getAvailabilitiesForCommand()}">
+                                    <td>[[${availability.startTime}]]</td>
+                                    <td>[[${availability.endTime}]]</td>
+                                    <td>[[${availability.price}]]</td>
+                                    <td>
+                                        <a class="btn  btn-success"   th:href="${'/command/new/'+availability.id}"> Command</a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </td>
+                <td class="w-25">
+                    <div class="card mb-3" th:if="${art._2 != null}" >
+                        <img th:if="${art._2.haveImage()}" th:src="${art._2.getMainImage().fullUrlImg}"
+                             class="card-img-top"
+                             alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">[[${'['+art._2.category+'] '+art._2.name}]]</h5>
+                            <p class="card-text">[[${art._2.description}]]</p>
+                            <p class="card-text"><small class="text-muted">[[${art._2.cooker.firstName} + ' '
+                                +${art._2.cooker.lastName} ]]</small></p>
+                        </div>
+                        <div class="card-footer" sec:authorize="hasRole('ROLE_EMPLOYEE')" >
+                            <table  class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Start date</th>
+                                    <th scope="col">End date </th>
+                                    <th scope="col">Price</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr data-th-each="availability : ${art._2.getAvailabilitiesForCommand()}">
+                                    <td>[[${availability.startTime}]]</td>
+                                    <td>[[${availability.endTime}]]</td>
+                                    <td>[[${availability.price}]]</td>
+                                    <td>
+                                        <a class="btn  btn-success"   th:href="${'/command/new/'+availability.id}"> Command</a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </td>
+                <td class="w-25">
+                    <div class="card mb-3" th:if="${art._3 != null}" >
+                        <img th:if="${art._3.haveImage()}" th:src="${art._3.getMainImage().fullUrlImg}"
+                             class="card-img-top"
+                             alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">[[${'['+art._3.category+'] '+art._3.name}]]</h5>
+                            <p class="card-text">[[${art._3.description}]]</p>
+                            <p class="card-text"><small class="text-muted">[[${art._3.cooker.firstName} + ' '
+                                +${art._3.cooker.lastName} ]]</small></p>
+                        </div>
+                        <div class="card-footer" sec:authorize="hasRole('ROLE_EMPLOYEE')" >
+                            <table  class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Start date</th>
+                                    <th scope="col">End date </th>
+                                    <th scope="col">Price</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr data-th-each="availability : ${art._3.getAvailabilitiesForCommand()}">
+                                    <td>[[${availability.startTime}]]</td>
+                                    <td>[[${availability.endTime}]]</td>
+                                    <td>[[${availability.price}]]</td>
+                                    <td>
+                                        <a class="btn  btn-success"   th:href="${'/command/new/'+availability.id}"> Command</a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </td>
+                <td class="w-25">
+                    <div class="card mb-3" th:if="${art._4 != null}" >
+                        <img th:if="${art._4.haveImage()}" th:src="${art._4.getMainImage().fullUrlImg}"
+                             class="card-img-top"
+                             alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">[[${'['+art._4.category+'] '+art._4.name}]]</h5>
+                            <p class="card-text">[[${art._4.description}]]</p>
+                            <p class="card-text"><small class="text-muted">[[${art._4.cooker.firstName} + ' '
+                                +${art._4.cooker.lastName} ]]</small></p>
+                        </div>
+                        <div class="card-footer" sec:authorize="hasRole('ROLE_EMPLOYEE')" >
+                            <table  class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Start date</th>
+                                    <th scope="col">End date </th>
+                                    <th scope="col">Price</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr data-th-each="availability : ${art._4.getAvailabilitiesForCommand()}">
+                                    <td>[[${availability.startTime}]]</td>
+                                    <td>[[${availability.endTime}]]</td>
+                                    <td>[[${availability.price}]]</td>
+                                    <td>
+                                        <a class="btn  btn-success"   th:href="${'/command/new/'+availability.id}"> Command</a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+
+        </table>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+
+</body>
+</html>

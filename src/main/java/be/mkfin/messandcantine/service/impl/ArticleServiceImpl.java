@@ -1,6 +1,7 @@
 package be.mkfin.messandcantine.service.impl;
 
 import be.mkfin.messandcantine.entity.Article;
+import be.mkfin.messandcantine.entity.Availability;
 import be.mkfin.messandcantine.entity.UserRegistered;
 import be.mkfin.messandcantine.repository.ArticleRepository;
 import be.mkfin.messandcantine.service.ArticleService;
@@ -49,5 +50,21 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public Article findArticleById(Long id) {
         return articleRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<Article> getArticlesWithAvailability() {
+        List<Article> all = articleRepository.findAll();
+        List<Article> articlesWithAvailability = new ArrayList<>();
+        for (Article article: all) {
+            for(Availability availability : article.getAvailabilities()){
+                if (availability.getNbreOrder() != 0){
+                    articlesWithAvailability.add(article);
+                    break;
+                }
+            }
+        }
+
+        return articlesWithAvailability;
     }
 }
