@@ -23,4 +23,9 @@ public class AvailabilityServiceImpl implements AvailabilityService {
             availability.setEndTime(Timestamp.valueOf(availability.getEndLocalDateTime()));
         return availabilityRepository.save(availability);
     }
+
+    @Override
+    public Availability findAvailabilityById(Long id) {
+        return availabilityRepository.findById(id).orElse(null);
+    }
 }

@@ -154,7 +154,7 @@ public class ArticleController {
                 article -> article.getImages() != null ?article.getImages().stream() : Stream.empty()
         ).forEach(image -> setFullUrlImg(image));
     }
-    void setFullUrlImg(Image image) {
+    public void setFullUrlImg(Image image) {
         image.setFullUrlImg(fileToPath(storageService.load(image.buildPathName())));
     }
     public static String fileToPath(Path path) {
