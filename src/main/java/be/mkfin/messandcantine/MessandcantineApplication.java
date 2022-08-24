@@ -14,7 +14,7 @@ public class MessandcantineApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(MessandcantineApplication.class, args);
 	}
-
+/*
 	@Bean
 	CommandLineRunner init(UserRepository userRepository, PasswordEncoder encoder) {
 		return (args) -> {
@@ -32,5 +32,5 @@ public class MessandcantineApplication {
 			}
 		};
 	}
-
+*/
 }
