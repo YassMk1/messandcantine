@@ -5,10 +5,8 @@ import be.mkfin.messandcantine.entity.Article;
 import be.mkfin.messandcantine.entity.Availability;
 import be.mkfin.messandcantine.entity.Image;
 import be.mkfin.messandcantine.entity.UserRegistered;
-import be.mkfin.messandcantine.service.ArticleService;
-import be.mkfin.messandcantine.service.ImageService;
-import be.mkfin.messandcantine.service.StorageService;
-import be.mkfin.messandcantine.service.UserService;
+import be.mkfin.messandcantine.model.CommandStatistics;
+import be.mkfin.messandcantine.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -41,6 +39,20 @@ public class ArticleController {
     private ImageService imageService;
     @Autowired
     private StorageService storageService;
+
+    @Autowired
+    private StatisticsService statisticsService ;
+
+
+    @GetMapping(path = "/article/Statistics")
+    public String commandeSatistics(Model model) {
+        List<CommandStatistics> statisticsArticles = statisticsService.getStatisticsOfMyCommands();
+
+        statisticsArticles.stream().forEach(st -> st.article.getImages().stream().forEach(image -> setFullUrlImg(image)));
+        model.addAttribute("statArticles", statisticsArticles);
+        return "admin/command_statistics";
+
+    }
 
     @GetMapping(path = "/article/new")
     public String newArticle(Model model) {

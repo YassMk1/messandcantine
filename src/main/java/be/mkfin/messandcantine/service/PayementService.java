@@ -3,6 +3,8 @@ package be.mkfin.messandcantine.service;
 import be.mkfin.messandcantine.entity.Payement;
 import com.paypal.api.payments.Payment;
 
+import java.util.List;
+
 public interface PayementService {
     Payement findById(Long id);
 
@@ -13,4 +15,6 @@ public interface PayementService {
     Payement update(Payement payement);
 
     Payement reject(Payement payement);
+
+    List<Payement> getAllMyPayemens();
 }

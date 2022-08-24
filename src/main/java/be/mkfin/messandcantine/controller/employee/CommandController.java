@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.websocket.server.PathParam;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class CommandController {
@@ -24,6 +25,8 @@ public class CommandController {
 
     @Autowired
     private ArticleService articleService;
+    @Autowired
+    private CommandeService commandeService;
     @Autowired
     private UserService userService;
     @Autowired
@@ -46,6 +49,18 @@ public class CommandController {
         articleController.fillUrlImages(articles);
         model.addAttribute("articles", groupArticlesBy4(articles));
         return "employee/all_articles";
+
+    }
+
+    @GetMapping(path = "/command/all")
+    public String allCommands(Model model) {
+        List<Payement> allMyPayemens = payementService.getAllMyPayemens();
+        List<Article> articles = allMyPayemens.stream()
+                .map(payement -> payement.getCommande().getAvailability().getArticle()).collect(Collectors.toList());
+        articleService.getArticlesWithAvailability();
+        articleController.fillUrlImages(articles);
+        model.addAttribute("allMyPayemens", allMyPayemens);
+        return "employee/all_commands";
 
     }
 

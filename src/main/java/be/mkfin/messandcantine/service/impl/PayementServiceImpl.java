@@ -7,11 +7,13 @@ import be.mkfin.messandcantine.repository.AvailabilityRepository;
 import be.mkfin.messandcantine.repository.CommandeRepository;
 import be.mkfin.messandcantine.repository.PayementRepository;
 import be.mkfin.messandcantine.service.PayementService;
+import be.mkfin.messandcantine.service.UserService;
 import com.paypal.api.payments.Payment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 
 @Service
@@ -19,6 +21,8 @@ public class PayementServiceImpl implements PayementService {
 
     @Autowired
     PayementRepository payementRepository ;
+    @Autowired
+    UserService userService ;
 
     @Autowired
     CommandeRepository commandeRepository ;
@@ -66,5 +70,10 @@ public class PayementServiceImpl implements PayementService {
         availability.setNbreOrder(availability.getNbreOrder()+ payement.getCommande().getQuantity());
         availabilityRepository.save(availability);
         return payementRepository.save(payement);
+    }
+
+    @Override
+    public List<Payement> getAllMyPayemens() {
+        return payementRepository.findAllByCommandeCommander(userService.getConnectedEmployee());
     }
 }

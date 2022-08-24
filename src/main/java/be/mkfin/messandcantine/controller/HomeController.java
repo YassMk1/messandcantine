@@ -51,4 +51,15 @@ public class HomeController {
         httpSession.invalidate();
         return "redirect:/";
     }
+    @GetMapping("/rights")
+    public String rights(HttpServletRequest request) {
+
+        return "/rights";
+    }
+    
+    @GetMapping("/policy")
+    public String policy(HttpServletRequest request) {
+
+        return "/policy";
+    }
 }

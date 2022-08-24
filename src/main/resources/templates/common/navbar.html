@@ -11,18 +11,28 @@
               <option th:unless="__${#locale}__=='fr'" value="fr" th:text="FR" ></option>
           </select>
       </div>
+
       <div sec:authorize="isAuthenticated()"  class="p-2 dropdown">
+          <a class="nav-link" th:href="@{/}">Home</a>
           <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button"
              data-bs-toggle="dropdown" aria-expanded="false" style="color: #000000;">
               <span class="navbar-brand"  sec:authentication="principal.username"></span>
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
-              <div  sec:authorize="hasRole('ROLE_ADMIN')">
+              <div sec:authorize="hasRole('ROLE_ADMIN')">
                   <li><a class="dropdown-item" th:href="@{/admin/allusers}">All Users</a></li>
                   <li><a class="dropdown-item" th:href="@{/admin/allarticles}">All Articles</a></li>
+                  <li>
+                      <hr class="dropdown-divider">
+                  </li>
+                  <li><a class="dropdown-item" th:href="@{/admin/Statistics}">Statistics</a></li>
               </div>
-              <div  sec:authorize="hasRole('ROLE_COOKER')">
+              <div sec:authorize="hasRole('ROLE_COOKER')">
                   <li><a class="dropdown-item" th:href="@{/articles}">My Articles</a></li>
+                  <li><a class="dropdown-item" th:href="@{/article/Statistics}">My Articles Statistics</a></li>
+              </div>
+              <div sec:authorize="hasRole('ROLE_EMPLOYEE')">
+                  <li><a class="dropdown-item" th:href="@{/command/all}">My Commands</a></li>
               </div>
 
               <li>
