@@ -1,10 +1,11 @@
 package be.mkfin.messandcantine.service.impl;
 
 import be.mkfin.messandcantine.entity.Availability;
+import be.mkfin.messandcantine.entity.Commande;
 import be.mkfin.messandcantine.entity.Payement;
 import be.mkfin.messandcantine.entity.PayementStatus;
 import be.mkfin.messandcantine.repository.AvailabilityRepository;
-import be.mkfin.messandcantine.repository.CommandeRepository;
+import be.mkfin.messandcantine.repository.BasketRepository;
 import be.mkfin.messandcantine.repository.PayementRepository;
 import be.mkfin.messandcantine.service.PayementService;
 import be.mkfin.messandcantine.service.UserService;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -25,7 +27,7 @@ public class PayementServiceImpl implements PayementService {
     UserService userService ;
 
     @Autowired
-    CommandeRepository commandeRepository ;
+    BasketRepository basketRepository ;
     @Autowired
     AvailabilityRepository availabilityRepository ;
     @Override
@@ -44,13 +46,31 @@ public class PayementServiceImpl implements PayementService {
 
     @Override
     public Payement save(Payement payement) {
-        Availability availability = availabilityRepository.findById(payement.getCommande().getAvailability().getId()).orElse(null);
-        if( availability == null && payement.getCommande().getQuantity() >availability.getNbreOrder()){
-            throw new IllegalStateException("Too late , there is no more items available for your command ");
+
+        Optional<Commande> first = payement.getBasket().getCommandes()
+                .stream()
+                .filter(commande -> {
+                    Availability availability = availabilityRepository.findById(commande.getAvailability().getId()).orElse(null);
+                    return availability == null && commande.getQuantity() > availability.getNbreOrder();
+
+                })
+                .findFirst();
+        if (first.isPresent()){
+            throw new IllegalStateException(String.format("Too late , there is no more items available for the article %s ",first.get().getAvailability().getArticle().getName()));
         }
-        availability.setNbreOrder(availability.getNbreOrder() - payement.getCommande().getQuantity());
-        availabilityRepository.save(availability);
-        payement.setCommande(commandeRepository.save(payement.getCommande()));
+        payement.getBasket().getCommandes()
+                .stream().forEach(cmd -> {
+                    Availability availability =availabilityRepository.findById(cmd.getAvailability().getId()).orElseGet(null) ;
+                   if( availability != null){
+                       availability.setNbreOrder(availability.getNbreOrder() - cmd.getQuantity());
+                       availabilityRepository.save(availability);
+                   }
+
+                });
+
+
+
+        payement.setBasket(basketRepository.save(payement.getBasket()));
         payement.setDate(new Date());
         payement.setStatus(PayementStatus.INITIATED);
         return payementRepository.save(payement);
@@ -63,17 +83,31 @@ public class PayementServiceImpl implements PayementService {
 
     @Override
     public Payement reject(Payement payement) {
-        Availability availability = availabilityRepository.findById(payement.getCommande().getAvailability().getId()).orElse(null);
-        if( availability == null ){
-            throw new IllegalStateException("Can't find availability ");
+        Optional<Commande> first = payement.getBasket().getCommandes()
+                .stream()
+                .filter(commande -> {
+                    Availability availability = availabilityRepository.findById(commande.getAvailability().getId()).orElse(null);
+                    return availability == null && commande.getQuantity() > availability.getNbreOrder();
+
+                })
+                .findFirst();
+        if (first.isPresent()){
+            throw new IllegalStateException(String.format("can't find availability "));
         }
-        availability.setNbreOrder(availability.getNbreOrder()+ payement.getCommande().getQuantity());
-        availabilityRepository.save(availability);
+        payement.getBasket().getCommandes()
+                .stream().forEach(cmd -> {
+                    Availability availability =availabilityRepository.findById(cmd.getAvailability().getId()).orElseGet(null) ;
+                    if( availability != null){
+                        availability.setNbreOrder(availability.getNbreOrder() - cmd.getQuantity());
+                        availabilityRepository.save(availability);
+                    }
+
+                });
         return payementRepository.save(payement);
     }
 
     @Override
     public List<Payement> getAllMyPayemens() {
-        return payementRepository.findAllByCommandeCommander(userService.getConnectedEmployee());
+        return payementRepository.findAllByBasketCommander(userService.getConnectedEmployee());
     }
 }

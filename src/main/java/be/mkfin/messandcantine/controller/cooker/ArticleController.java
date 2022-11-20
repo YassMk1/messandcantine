@@ -183,7 +183,7 @@ public class ArticleController {
     @GetMapping("/downloadFile/{filename:.+}")
     @ResponseBody
     public ResponseEntity<Resource> loadImageFromServer(@PathVariable String filename) {
-        String realFileName = filename.replaceAll("_","\\\\");
+        String realFileName = filename.replaceAll("_","//");
         Resource file = storageService.loadAsResource("articles" + File.separator + realFileName);
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(MediaType.IMAGE_JPEG_VALUE))

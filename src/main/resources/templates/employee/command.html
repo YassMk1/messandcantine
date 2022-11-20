@@ -42,10 +42,9 @@
                 </br>
                 <a>Price : [[${command.availability.price}]] € </a>
                 </br></br>
-                <form  th:action="@{/command/new}" th:method="post" class="form-horizontal" th:object="${command}">
+                <form  th:action="@{/command/add}" th:method="post" class="form-horizontal" th:object="${command}">
                     <input type="hidden"  th:field="*{id}">
                     <input type="hidden" th:field="*{availability}" />
-                    <input type="hidden" th:field="*{commander}" />
                     <div class="form-group row">
                         <label for="quantity" class="col-sm-3 control-label">Quantity </label>
                         <div class="col-sm-8">
@@ -58,7 +57,7 @@
                     <div class="form-group">
                         </br>
                         <div class="col-sm-offset-3 col-sm-6">
-                            <button type="submit" class="btn btn-success" th:text="#{command.form.pay}"></button>
+                            <button type="submit" class="btn btn-success" th:text="#{command.form.addToBasket}"></button>
                         </div>
                     </div>
                 </form>

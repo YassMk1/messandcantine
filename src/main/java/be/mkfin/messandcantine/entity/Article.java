@@ -34,7 +34,7 @@ public class Article {
     @Column(nullable = false)
     private boolean removed = false;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "article")
+    @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL, mappedBy = "article")
     private Set<Image> images;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "article")

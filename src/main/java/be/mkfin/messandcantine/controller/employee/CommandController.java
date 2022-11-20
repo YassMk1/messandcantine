@@ -11,18 +11,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.websocket.server.PathParam;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
 public class CommandController {
 
 
+    private static final String BASKET = "BASKET";
     @Autowired
     private ArticleService articleService;
     @Autowired
@@ -56,7 +62,8 @@ public class CommandController {
     public String allCommands(Model model) {
         List<Payement> allMyPayemens = payementService.getAllMyPayemens();
         List<Article> articles = allMyPayemens.stream()
-                .map(payement -> payement.getCommande().getAvailability().getArticle()).collect(Collectors.toList());
+                .flatMap(payement -> payement.getBasket().getCommandes().stream())
+                .map(commande -> commande.getAvailability().getArticle()).collect(Collectors.toList());
         articleService.getArticlesWithAvailability();
         articleController.fillUrlImages(articles);
         model.addAttribute("allMyPayemens", allMyPayemens);
@@ -77,7 +84,6 @@ public class CommandController {
         articleController.fillUrlImages(articles);
         model.addAttribute("article", availability.getArticle());
         Commande commande = new Commande();
-        commande.setCommander(userService.getConnectedEmployee());
         commande.setAvailability(availability);
         model.addAttribute("command", commande);
         return "employee/command";
@@ -86,22 +92,73 @@ public class CommandController {
 
     ///command/new
 
-    @PostMapping("/command/new")
-    public String newCommand(Commande command,BindingResult result, Model model) {
+
+    @PostMapping("/command/add")
+    public String addCommand(Commande command,BindingResult result, Model model, HttpSession session) {
         if (result.hasErrors()) {
             // Fait rien pour le moment, ceci est pour la validation des champs d'input
         }
-        if (command.getAvailability().getArticle().haveImage()){
-            command.getAvailability().getArticle().getImages().stream().forEach(image -> articleController.setFullUrlImg(image));
+        Object basket = session.getAttribute(BASKET);
+        if (basket == null){
+            basket = new Basket();
+            ((Basket) basket).setCommandes(new HashSet<>());
+            ((Basket) basket).setCommander(userService.getConnectedUser());
+            session.setAttribute(BASKET,basket);
         }
+        command.setBasket((Basket) basket);
+        ((Basket) basket).getCommandes().add(command);
+        return "redirect:/command/articles";
+    }
+
+    @GetMapping("/command/basket")
+    public  String getBasket(HttpSession session){
+        fillImages((Basket) session.getAttribute(BASKET));
+        return "employee/basket";
+    }
+
+    @GetMapping("/command/clear")
+    public String clearBasket(HttpSession session) {
+        Basket attribute = (Basket) session.getAttribute(BASKET);
+        if (attribute != null) {
+            attribute.getCommandes().clear();
+        }
+        return "employee/basket";
+    }
+
+    @GetMapping("/command/delete/{id}")
+    public String removeCommandFromBasket(@PathVariable("id") Long id, HttpSession session) {
+        Basket basket = (Basket) session.getAttribute(BASKET);
+        if (basket != null) {
+            Optional<Commande> toRemove = basket.getCommandes().stream().filter(cmd -> cmd.getAvailability().getArticle().getId().equals(id)).findFirst();
+            if (toRemove.isPresent()) {
+                basket.getCommandes().remove(toRemove.get());
+            }
+        }
+        return "employee/basket";
+    }
+    @GetMapping("/command/new")
+    public String newCommand( Model model, HttpSession session) {
+                Object basket = session.getAttribute(BASKET);
+        if (basket == null){
+            return "redirect:command/basket";
+        }
+        Basket bskt = (Basket) basket;
+        fillImages(bskt);
         Payement payement = new Payement();
-        payement.setCommande(command);
-        payement.setAmount(""+command.getQuantity() * command.getAvailability().getPrice());
+        payement.setBasket(bskt);
+        payement.setAmount(""+ bskt.getCommandes().stream()
+                .mapToDouble(command -> command.getQuantity() * command.getAvailability().getPrice())
+                .sum());
         payementService.save(payement);
         model.addAttribute("payement",payement);
-        model.addAttribute("article",command.getAvailability().getArticle());
-        model.addAttribute("command",command);
-        return "/employee/command_pay";
+        return "/employee/payement";
+    }
+
+    private void fillImages(Basket bskt) {
+        bskt.getCommandes().stream()
+                .filter(command -> command.getAvailability().getArticle().haveImage())
+                .flatMap(command ->command.getAvailability().getArticle().getImages().stream())
+                .forEach(image -> articleController.setFullUrlImg(image));
     }
 
     /**
@@ -110,14 +167,13 @@ public class CommandController {
      * @return
      */
     @PostMapping(path = "/command/pay")
-    public String bookCourse(Payement payement, HttpServletRequest request)  {
+    public String bookCourse(Payement payement, HttpSession session)  {
         payement = getPayement(payement.getId(), "This payement can't be done for security reasons  ");
         // TODO : check the status of the reservation
         try {
             String cancelUrl = "http://localhost:8080/command/pay/cancel/"+payement.getId();//cancelPayURL();
             String successUrl = "http://localhost:8080/command/pay/success/"+payement.getId();//successPayURL();
-            String description = String.format("Command of %s of %s for the price of %s €",payement.getCommande().getQuantity()
-            ,payement.getCommande().getAvailability().getArticle().getName()
+            String description = String.format("Command of %s articles for the price of %s €",payement.getBasket().getCommandes().size()
             ,payement.getAmount());
             Payment payment = paypalService.createPayment(Double.valueOf(payement.getAmount()),
                     "EUR",
@@ -128,8 +184,10 @@ public class CommandController {
 
             payementService.makePaypalPayment(payement,payment);
 
+
             for(Links link:payment.getLinks()) {
                 if(link.getRel().equals("approval_url")) {
+                    session.removeAttribute(BASKET);
                     return "redirect:"+link.getHref();
                 }
             }
@@ -145,7 +203,7 @@ public class CommandController {
         Payement payement =  payementService.findById(id);
         // security check
         UserRegistered connectedUser = userService.getConnectedUser();
-        if( !payement.getCommande().getCommander().getId().equals(connectedUser.getId())){
+        if( !payement.getBasket().getCommander().getId().equals(connectedUser.getId())){
             throw new IllegalStateException(errorMessage);
         }
         return payement;
@@ -159,13 +217,9 @@ public class CommandController {
         payement.setStatus(PayementStatus.CONFIRMED);
         payementService.update(payement);
         model.addAttribute("payement",payement);
-        Commande command = payement.getCommande();
-        if (command.getAvailability().getArticle().haveImage()){
-            command.getAvailability().getArticle().getImages().stream().forEach(image -> articleController.setFullUrlImg(image));
-        }
-        model.addAttribute("article", command.getAvailability().getArticle());
-        model.addAttribute("command", command);
-        return "/employee/command_confirm";
+        Basket basket = payement.getBasket();
+        fillImages(basket);
+        return "/employee/payement_confirm";
     }
 
     @GetMapping( path = "command/pay/cancel/{id}")
@@ -174,13 +228,9 @@ public class CommandController {
         payement.setStatus(PayementStatus.REJECTED);
         payementService.reject(payement);
         model.addAttribute("payement",payement);
-        Commande commande = payement.getCommande();
-        if (commande.getAvailability().getArticle().haveImage()){
-            commande.getAvailability().getArticle().getImages().stream().forEach(image -> articleController.setFullUrlImg(image));
-        }
-        model.addAttribute("article", commande.getAvailability().getArticle());
-        model.addAttribute("command", commande);
-        return "/employee/command_cancel";
+        Basket basket = payement.getBasket();
+        fillImages(basket);
+        return "/employee/payement_cancel";
     }
 
     private List<ArticleGroup> groupArticlesBy4(List<Article> articles) {

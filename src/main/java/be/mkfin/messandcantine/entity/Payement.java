@@ -18,8 +18,8 @@ public class Payement {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "id_commande", nullable = false)
-    private Commande commande;
+    @JoinColumn(name = "id_basket", nullable = false)
+    private Basket basket;
 
     @Column(length = 45, nullable = false)
     @Enumerated(EnumType.STRING)

@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns="http://www.w3.org/1999/html">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <title > My Commands </title><link rel="shortcut icon" href="/img/img.jpeg">
+</head>
+<body>
+<nav th:replace="common/navbar :: header"/>
+</br>
+
+<div class="d-flex p-4 justify-content-center">
+    <div class="card text-center ">
+        <div class="card-header">
+            <a> My Basket</a>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <table id="dtBasicExample" class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th scope="col">Article</th>
+                        <th scope="col">Start Date </th>
+                        <th scope="col">End Date </th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Quantity</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr data-th-each="cmd : ${session.BASKET.commandes}">
+                        <td>
+
+    <img th:if="${cmd.availability.article.haveImage()}" th:src="${cmd.availability.article.getMainImage().fullUrlImg}" class="rounded float-left" alt="..." width="100">
+
+
+                        </td>
+                        <td>[[${cmd.availability.article.name}]]</td>
+                        <td>[[${cmd.availability.startTime}]]</td>
+                        <td>[[${cmd.availability.endTime}]]</td>
+                        <td>[[${cmd.availability.price}]]</td>
+                        <td>[[${cmd.quantity}]]</td>
+                        <td><a class="btn  btn-danger"   th:href="${'/command/delete/'+cmd.availability.article.id}"> remove</a></td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <td><font color="black" face="Verdana, Geneva, sans-serif" size="+3">Total</font></td>
+                        <td><font color="black" face="Verdana, Geneva, sans-serif" size="+3">[[${session.BASKET.total()}]]</font></td>
+                    </tr>
+                    </tfoot>
+                </table>
+
+
+                <div>
+                    <a class="btn  btn-warning"   th:href="${'/command/articles'}"> Home</a>
+                    <a class="btn  btn-danger"   th:href="${'/command/clear'}"> Clear Basket</a>
+                    <a class="btn  btn-success"   th:href="${'/command/new'}"> Pay</a>
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+
+</body><footer th:replace="common/footer :: footer"/>
+</html>

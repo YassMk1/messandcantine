@@ -26,30 +26,45 @@
                     <thead>
                     <tr>
                         <th></th>
-                        <th scope="col">Article</th>
+                        <th scope="col">Total Price</th>
+                        <th scope="col">Payement Status</th>
                         <th scope="col">Command Date </th>
-                        <th scope="col">Start Date </th>
-                        <th scope="col">End Date </th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Quantity</th>
-                        <th scope="col">Status</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr data-th-each="pay : ${allMyPayemens}">
+
                         <td>
+                            <table>
+                                <thead>
+                                <tr>
+                                    <th></th>
+                                    <th scope="col">Article</th>
 
-    <img th:if="${pay.commande.availability.article.haveImage()}" th:src="${pay.commande.availability.article.getMainImage().fullUrlImg}" class="rounded float-left" alt="..." width="100">
+                                    <th scope="col">Start Date </th>
+                                    <th scope="col">End Date </th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col">Quantity</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr  data-th-each="cmd : ${pay.getBasket().getCommandes()}" >
+                                    <td>
+                                        <img th:if="${cmd.availability.article.haveImage()}" th:src="${cmd.availability.article.getMainImage().fullUrlImg}" class="rounded float-left" alt="..." width="100">                        </td>
+                                    <td>[[${cmd.availability.article.name}]]</td>
 
-
+                                    <td>[[${cmd.availability.startTime}]]</td>
+                                    <td>[[${cmd.availability.endTime}]]</td>
+                                    <td>[[${cmd.availability.price}]]€</td>
+                                    <td>[[${cmd.quantity}]]</td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </td>
-                        <td>[[${pay.commande.availability.article.name}]]</td>
-                        <td>[[${pay.date}]]</td>
-                        <td>[[${pay.commande.availability.startTime}]]</td>
-                        <td>[[${pay.commande.availability.endTime}]]</td>
-                        <td>[[${pay.commande.availability.price}]]</td>
-                        <td>[[${pay.commande.quantity}]]</td>
+
+                        <td>[[${pay.amount}]]€</td>
                         <td>[[${pay.status}]]</td>
+                        <td>[[${pay.date}]]</td>
                     </tr>
                     </tbody>
                 </table>

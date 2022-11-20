@@ -6,6 +6,6 @@ public enum PayementStatus {
 
     public boolean isFailed() {
 
-        return this == INITIATED || this == PAYPAL_TENTATIVE ||  this == FAILED;
+        return this == INITIATED || this == PAYPAL_TENTATIVE ||  this == FAILED || this == REJECTED;
     }
 }

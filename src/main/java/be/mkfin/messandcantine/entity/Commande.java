@@ -23,21 +23,11 @@ public class Commande {
     @JoinColumn(name = "availability_id")
     private Availability availability;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
-    @Transient
-    private LocalDateTime orderLocalDateTime;
-
-    @Column(name = "order_date")
-    private Timestamp orderDate;
+    @ManyToOne
+    @JoinColumn(name = "basket_id")
+    private Basket basket;
 
     @Column
     private int quantity;
-
-    @Column(nullable = false)
-    private boolean canceled = false;
-
-    @ManyToOne
-    @JoinColumn(name = "commander", nullable = false)
-    private UserRegistered commander;
 
 }

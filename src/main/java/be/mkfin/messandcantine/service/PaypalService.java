@@ -66,7 +66,8 @@ public class PaypalService {
 	}
 
 	public Refund refund(Payement payement){
-		Availability reservation = payement.getCommande().getAvailability();
+	//	Availability reservation = payement.getBasket().getAvailability();
+		Availability reservation = null;
 		Refund refund = new Refund();
 		Amount amount = new Amount();
 		amount.setTotal((""+reservation.getPrice()).replace(",","."));
