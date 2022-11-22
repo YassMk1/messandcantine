@@ -30,6 +30,7 @@
                         <th scope="col">Payement Status</th>
                         <th scope="col">Basket Status</th>
                         <th scope="col">Command Date </th>
+                        <th scope="col"> Actions</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -67,6 +68,13 @@
                         <td>[[${pay.status}]]</td>
                         <td>[[${pay.basket.status}]]</td>
                         <td>[[${pay.date}]]</td>
+                        <td>
+                            <!-- INITIATED,PAYED,FAILED, CONFIRMED, PREPARED, CANCELED, DELIVERED; -->
+                            <a th:if="${pay.getBasket().getStatus().name() =='PAYED'}" class="btn  btn-warning"   th:href="${'/articles/commands/'+pay.getBasket().getId()+'?act=CONFIRMED'}"> Confirm</a>
+                            <a th:if="${pay.getBasket().getStatus().name() =='PAYED'}" class="btn  btn-danger"   th:href="${'/articles/commands/'+pay.getBasket().getId()+'?act=CANCELED'}"> Cancel</a>
+                            <a th:if="${pay.getBasket().getStatus().name() =='CONFIRMED'}" class="btn  btn-success"   th:href="${'/articles/commands/'+pay.getBasket().getId()+'?act=PREPARED'}"> Prepare</a>
+                            <a th:if="${pay.getBasket().getStatus().name() =='PREPARED'}" class="btn  btn-success"   th:href="${'/articles/commands/'+pay.getBasket().getId()+'?act=DELIVERED'}"> Deliver</a>
+                        </td>
                     </tr>
                     </tbody>
                 </table>

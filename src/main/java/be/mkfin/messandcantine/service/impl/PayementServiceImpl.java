@@ -1,9 +1,6 @@
 package be.mkfin.messandcantine.service.impl;
 
-import be.mkfin.messandcantine.entity.Availability;
-import be.mkfin.messandcantine.entity.Commande;
-import be.mkfin.messandcantine.entity.Payement;
-import be.mkfin.messandcantine.entity.PayementStatus;
+import be.mkfin.messandcantine.entity.*;
 import be.mkfin.messandcantine.repository.AvailabilityRepository;
 import be.mkfin.messandcantine.repository.BasketRepository;
 import be.mkfin.messandcantine.repository.PayementRepository;
@@ -16,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -109,5 +107,17 @@ public class PayementServiceImpl implements PayementService {
     @Override
     public List<Payement> getAllMyPayemens() {
         return payementRepository.findAllByBasketCommander(userService.getConnectedEmployee());
+    }
+
+    @Override
+    public List<Payement> getAllPayemensOfCooker(UserRegistered connectedCooker) {
+        return payementRepository.findAll().stream()
+                .filter(pay -> pay.getBasket().getCommandes() != null)
+                .filter(pay -> !pay.getBasket().getCommandes().isEmpty())
+                .filter(pay -> pay.getBasket().getCommandes().stream()
+                        .map( cmd -> cmd
+                                .getAvailability().getArticle().getCooker())
+                        .anyMatch(ck -> ck.getUsername().equals(connectedCooker.getUsername())))
+                .collect(Collectors.toList());
     }
 }

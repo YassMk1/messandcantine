@@ -1,6 +1,7 @@
 package be.mkfin.messandcantine.service;
 
 import be.mkfin.messandcantine.entity.Payement;
+import be.mkfin.messandcantine.entity.UserRegistered;
 import com.paypal.api.payments.Payment;
 
 import java.util.List;
@@ -17,4 +18,6 @@ public interface PayementService {
     Payement reject(Payement payement);
 
     List<Payement> getAllMyPayemens();
+
+    List<Payement> getAllPayemensOfCooker(UserRegistered connectedCooker);
 }

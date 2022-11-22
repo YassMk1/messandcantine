@@ -50,4 +50,8 @@ public class Basket {
     @Column(nullable = false)
     private boolean canceled = false;
 
+    @Column(length = 45, nullable = false)
+    @Enumerated(EnumType.STRING)
+    private BasketStatus status = BasketStatus.INITIATED;
+
 }

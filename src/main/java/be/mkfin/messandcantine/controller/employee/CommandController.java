@@ -215,9 +215,11 @@ public class CommandController {
         Payement payement = payementService.findById(id);
         payement.setPaypalPayment(paypalPayement);
         payement.setStatus(PayementStatus.CONFIRMED);
+        Basket basket = payement.getBasket();
+        basket.setStatus(BasketStatus.PAYED);
         payementService.update(payement);
         model.addAttribute("payement",payement);
-        Basket basket = payement.getBasket();
+
         fillImages(basket);
         return "/employee/payement_confirm";
     }
@@ -226,9 +228,10 @@ public class CommandController {
     public String payementCancel(@PathVariable Long id , Model model) {
         Payement payement = payementService.findById(id);
         payement.setStatus(PayementStatus.REJECTED);
+        Basket basket = payement.getBasket();
+        basket.setStatus(BasketStatus.FAILED);
         payementService.reject(payement);
         model.addAttribute("payement",payement);
-        Basket basket = payement.getBasket();
         fillImages(basket);
         return "/employee/payement_cancel";
     }

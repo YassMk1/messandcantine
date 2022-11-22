@@ -1,10 +1,7 @@
 package be.mkfin.messandcantine.controller.cooker;
 
 
-import be.mkfin.messandcantine.entity.Article;
-import be.mkfin.messandcantine.entity.Availability;
-import be.mkfin.messandcantine.entity.Image;
-import be.mkfin.messandcantine.entity.UserRegistered;
+import be.mkfin.messandcantine.entity.*;
 import be.mkfin.messandcantine.model.CommandStatistics;
 import be.mkfin.messandcantine.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +17,12 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.websocket.server.PathParam;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Controller
@@ -159,6 +158,41 @@ public class ArticleController {
         fillUrlImages(articles);
         model.addAttribute("articles", articles);
         return "cooker/all_articles";
+
+    }
+
+
+    @Autowired
+    PayementService payementService;
+
+    @GetMapping(path = "/articles/commands")
+    public String allCommands(Model model) {
+        List<Payement> allMyPayemens = payementService.getAllPayemensOfCooker(userService.getConnectedCooker());
+        List<Article> articles = allMyPayemens.stream()
+                .flatMap(payement -> payement.getBasket().getCommandes().stream())
+                .map(commande -> commande.getAvailability().getArticle()).collect(Collectors.toList());
+        fillUrlImages(articles);
+        model.addAttribute("allMyPayemens", allMyPayemens);
+        return "cooker/all_commands";
+
+    }
+
+    @Autowired
+    private BasketService basketService ;
+    @GetMapping(path = "/articles/commands/{id}")
+    public String doActionOnBasket(Model model , @PathVariable("id") Long id , @PathParam("act") String act) {
+
+        Basket basket = basketService.findById(id);
+        if (basket != null && act != null){
+
+            BasketStatus basketStatus = BasketStatus.valueOf(act);
+            if (basketStatus != null){
+                basket.setStatus(basketStatus);
+                basketService.save(basket);
+            }
+        }
+
+        return "redirect:/articles/commands";
 
     }
    public void fillUrlImages(List<Article> all) {
