@@ -9,7 +9,7 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-    <title > My Commands </title><link rel="shortcut icon" href="/img/img.jpeg">
+    <title >Mes commandes</title><link rel="shortcut icon" href="/img/img.jpeg">
 </head>
 <body>
 <nav th:replace="common/navbar :: header"/>
@@ -18,7 +18,7 @@
 <div class="d-flex p-4 justify-content-center">
     <div class="card text-center ">
         <div class="card-header">
-            <a> My commands</a>
+            <a> Mes commandes</a>
         </div>
         <div class="card-body">
             <div class="row">
@@ -26,11 +26,11 @@
                     <thead>
                     <tr>
                         <th></th>
-                        <th scope="col">Total Price</th>
-                        <th scope="col">Payement Status</th>
-                        <th scope="col">Basket Status</th>
-                        <th scope="col">Command Date </th>
-                        <th scope="col"> Actions</th>
+                        <th scope="col">Prix total</th>
+                        <th scope="col">Statut de paiement</th>
+                        <th scope="col">Statut du panier</th>
+                        <th scope="col">Date de commande</th>
+                        <th scope="col">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -45,8 +45,8 @@
 
                                     <th scope="col">Start Date </th>
                                     <th scope="col">End Date </th>
-                                    <th scope="col">Price</th>
-                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Prix</th>
+                                    <th scope="col">Quantité</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -70,10 +70,10 @@
                         <td>[[${pay.date}]]</td>
                         <td>
                             <!-- INITIATED,PAYED,FAILED, CONFIRMED, PREPARED, CANCELED, DELIVERED; -->
-                            <a th:if="${pay.getBasket().getStatus().name() =='PAYED'}" class="btn  btn-warning"   th:href="${'/articles/commands/'+pay.getBasket().getId()+'?act=CONFIRMED'}"> Confirm</a>
-                            <a th:if="${pay.getBasket().getStatus().name() =='PAYED'}" class="btn  btn-danger"   th:href="${'/articles/commands/'+pay.getBasket().getId()+'?act=CANCELED'}"> Cancel</a>
-                            <a th:if="${pay.getBasket().getStatus().name() =='CONFIRMED'}" class="btn  btn-success"   th:href="${'/articles/commands/'+pay.getBasket().getId()+'?act=PREPARED'}"> Prepare</a>
-                            <a th:if="${pay.getBasket().getStatus().name() =='PREPARED'}" class="btn  btn-success"   th:href="${'/articles/commands/'+pay.getBasket().getId()+'?act=DELIVERED'}"> Deliver</a>
+                            <a th:if="${pay.getBasket().getStatus().name() =='PAYED'}" class="btn  btn-warning"   th:href="${'/articles/commands/'+pay.getBasket().getId()+'?act=CONFIRMED'}"> Confirmer</a>
+                            <a th:if="${pay.getBasket().getStatus().name() =='PAYED'}" class="btn  btn-danger"   th:href="${'/articles/commands/'+pay.getBasket().getId()+'?act=CANCELED'}"> Annuler</a>
+                            <a th:if="${pay.getBasket().getStatus().name() =='CONFIRMED'}" class="btn  btn-success"   th:href="${'/articles/commands/'+pay.getBasket().getId()+'?act=PREPARED'}"> Prêt</a>
+                            <a th:if="${pay.getBasket().getStatus().name() =='PREPARED'}" class="btn  btn-success"   th:href="${'/articles/commands/'+pay.getBasket().getId()+'?act=DELIVERED'}"> Livré</a>
                         </td>
                     </tr>
                     </tbody>

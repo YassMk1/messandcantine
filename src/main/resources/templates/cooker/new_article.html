@@ -8,7 +8,7 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-    <title>New Article</title><link rel="shortcut icon" href="/img/img.jpeg">
+    <title>Nouvel Article</title><link rel="shortcut icon" href="/img/img.jpeg">
 </head>
 <body>
 <nav th:replace="common/navbar :: header"/>
@@ -27,7 +27,7 @@
                           class="form-horizontal" th:object="${article}">
                         <input type="hidden" th:field="*{id}">
                         <div class="form-group row">
-                            <label for="name" class="col-sm-3 control-label">Name</label>
+                            <label for="name" class="col-sm-3 control-label">Nom</label>
                             <div class="col-sm-8">
                                 <input id="name" class="form-control" type="text" th:field="*{name}"
                                        placeholder="Enter your article name"/>
@@ -47,7 +47,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="category" class="col-sm-3 control-label">Category</label>
+                            <label for="category" class="col-sm-3 control-label">Categorie</label>
                             <div class="col-sm-8">
                                 <select class="form-select mb-3" th:field="*{category}" name="category"
                                         id="category" required="required">
@@ -60,7 +60,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="urlImg" class="col-sm-3 control-label">Photo : </label>
+                            <label for="urlImg" class="col-sm-3 control-label">Image : </label>
                             <div class="col-sm-8">
                                 <input type="file" name="file" accept="image/jpeg"
                                        class="form-control" id="urlImg" placeholder=" ex.: sandwich.jpeg"/>

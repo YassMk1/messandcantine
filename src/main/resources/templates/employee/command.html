@@ -40,7 +40,7 @@
                 </br>
                 <a>End Date & Time  : [[${command.availability.endTime}]]</a>
                 </br>
-                <a>Price : [[${command.availability.price}]] € </a>
+                <a>Prix : [[${command.availability.price}]] € </a>
                 </br></br>
                 <form  th:action="@{/command/add}" th:method="post" class="form-horizontal" th:object="${command}">
                     <input type="hidden"  th:field="*{id}">

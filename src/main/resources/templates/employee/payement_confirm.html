@@ -9,7 +9,7 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-    <title > My Commands </title><link rel="shortcut icon" href="/img/img.jpeg">
+    <title > Votre panier </title><link rel="shortcut icon" href="/img/img.jpeg">
 </head>
 <body>
 <nav th:replace="common/navbar :: header"/>
@@ -18,7 +18,7 @@
 <div class="d-flex p-4 justify-content-center">
     <div class="card text-center  w-50">
         <div class="card-header">
-            <a> My Basket</a>
+            <a> Mon panier</a>
         </div>
         <div class="card-body">
             <div class="row">
@@ -34,8 +34,8 @@
                         <th scope="col">Article</th>
                         <th scope="col">Start Date </th>
                         <th scope="col">End Date </th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Quantity</th>
+                        <th scope="col">Prix</th>
+                        <th scope="col">Quantité</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -61,7 +61,7 @@
                     </tfoot>
                 </table>
                 <div>
-                    <a class="btn  btn-warning"   th:href="${'/command/articles'}"> Home</a>
+                    <a class="btn  btn-warning"   th:href="${'/command/articles'}"> Accueil</a>
                 </div>
 
             </div>

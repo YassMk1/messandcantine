@@ -9,8 +9,8 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-    <title sec:authorize="hasRole('ROLE_COOKER')" >Statistics of My Articles  </title><link rel="shortcut icon" href="/img/img.jpeg">
-        <title sec:authorize="hasRole('ROLE_ADMIN')" > Statistics of All commands </title><link rel="shortcut icon" href="/img/img.jpeg">
+    <title sec:authorize="hasRole('ROLE_COOKER')" >Statistiques - Mes articles</title><link rel="shortcut icon" href="/img/img.jpeg">
+        <title sec:authorize="hasRole('ROLE_ADMIN')" >Statistiques - Toutes les commandes</title><link rel="shortcut icon" href="/img/img.jpeg">
 </head>
 <body>
 <nav th:replace="common/navbar :: header"/>
@@ -19,8 +19,8 @@
 <div class="d-flex p-4 justify-content-center">
     <div class="card text-center ">
         <div class="card-header">
-            <a sec:authorize="hasRole('ROLE_COOKER')">Statistics of My Articles</a>
-            <a sec:authorize="hasRole('ROLE_ADMIN')" > Statistics of All commands</a>
+            <a sec:authorize="hasRole('ROLE_COOKER')">Statistiques - Mes articles</a>
+            <a sec:authorize="hasRole('ROLE_ADMIN')" >Statistiques - Toutes les commandes</a>
         </div>
         <div class="card-body">
             <div class="row">

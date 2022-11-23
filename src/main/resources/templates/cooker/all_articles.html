@@ -26,19 +26,19 @@
             <div class="row">
 
                 <div class="p-4 d-flex justify-content-left">
-                    <a sec:authorize="hasRole('ROLE_COOKER')" class="btn btn-primary"  th:href="@{/article/new}">Add new article</a>
+                    <a sec:authorize="hasRole('ROLE_COOKER')" class="btn btn-primary"  th:href="@{/article/new}">Ajouter un nouvel article</a>
                 </div>
 
                 <table id="dtBasicExample" class="table table-bordered">
                     <thead>
                     <tr>
                         <th></th>
-                        <th scope="col">name</th>
-                        <th scope="col">Description </th>
-                        <th scope="col">Category</th>
-                        <th scope="col">Cooker</th>
-                        <th scope="col">removed</th>
-                        <th scope="col">Nbr of images</th>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Categorie</th>
+                        <th scope="col">Chef cuisinier</th>
+                        <th scope="col">Supprimer</th>
+                        <th scope="col">Nbr d'images</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
@@ -58,8 +58,8 @@
                         <td>[[${art.removed}]]</td>
                         <td>[[${art.images.size()}]]</td>
                         <td>
-                            <a sec:authorize="hasRole('ROLE_COOKER')" class="btn  btn-success"   th:href="${'/article/edit/'+art.id}">Edit</a>
-                            <a sec:authorize="hasRole('ROLE_COOKER')" class="btn  btn-success"   th:href="${'/article/newavail/'+art.id}">New Availibility</a>
+                            <a sec:authorize="hasRole('ROLE_COOKER')" class="btn  btn-success"   th:href="${'/article/edit/'+art.id}">Modifier</a>
+                            <a sec:authorize="hasRole('ROLE_COOKER')" class="btn  btn-success"   th:href="${'/article/newavail/'+art.id}">Nouvelle disponibilité</a>
                         </td>
                     </tr>
                     </tbody>

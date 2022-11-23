@@ -25,53 +25,53 @@
                 <div class=" col-lg-offset-2">
                     <form  th:action="@{/subscribe/new}" th:method="post" class="form-horizontal" th:object="${user}">
                         <div class="form-group row">
-                            <label for="username" class="col-sm-3 control-label">User name</label>
+                            <label for="username" class="col-sm-3 control-label" th:text=#{login.username}>User name</label>
                             <div class="col-sm-8">
                                 <input id= "username" class="form-control" type="text"  th:field="*{username}" placeholder="Enter your user name" />
                                 <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="password" class="col-sm-3 control-label">Password</label>
+                            <label for="password" class="col-sm-3 control-label" th:text=#{login.password}>Password</label>
                             <div class="col-sm-8">
-                                <input class="form-control form-control-lg" type="password" name="password" id="password"
+                                <input class="form-control" type="password" name="password" id="password"
                                        th:placeholder="#{login.form.password}" required="required"/>
                                 <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="firstName" class="col-sm-3 control-label">First name</label>
+                            <label for="firstName" class="col-sm-3 control-label" th:text=#{login.firstname}>First name</label>
                             <div class="col-sm-8">
                                 <input id= "firstName" class="form-control" type="text"  th:field="*{firstName}" placeholder="Enter your first name" />
                                 <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="lastName" class="col-sm-3 control-label">Last name</label>
+                            <label for="lastName" class="col-sm-3 control-label" th:text=#{login.lastname}>Last name</label>
                             <div class="col-sm-8">
                                 <input id= "lastName" class="form-control" type="text"  th:field="*{lastName}" placeholder="Enter your last name" />
                                 <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="mail" class="col-sm-3 control-label">Email</label>
+                            <label for="mail" class="col-sm-3 control-label" th:text=#{login.email}>Email</label>
                             <div class="col-sm-8">
                                 <input id= "mail" class="form-control" type="text"  th:field="*{mail}" placeholder="email@mail.com" />
                                 <span th:if="${#fields.hasErrors('mail')}" th:errors="*{mail}"></span>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="phone" class="col-sm-3 control-label">Phone</label>
+                            <label for="phone" class="col-sm-3 control-label" th:text=#{login.phone}>Phone</label>
                             <div class="col-sm-8">
-                                <input id="phone" class="form-control" type="tel" th:field="*{phone}" placeholder="Phone" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}-[0-9]{2}"
-                                       required /><small>Format: 0485-05-57-04</small>
+                                <input id="phone" class="form-control" type="tel" th:field="*{phone}" placeholder="Phone" pattern="[0-9]{4}[0-9]{2}[0-9]{2}[0-9]{2}"
+                                       required /><small>Format: 0485055704</small>
 
                                 <span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></span>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="gender" class="col-sm-3 control-label">Gender</label>
+                            <label for="gender" class="col-sm-3 control-label" th:text=#{login.gender}>Gender</label>
                             <div class="col-sm-8">
                                 <select class="form-select mb-3" th:field="*{gender}" name="gender" id="gender" required="required">
                                     <option th:each="gend : ${T(be.mkfin.messandcantine.entity.Gender).values()}"
@@ -83,7 +83,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="gender" class="col-sm-3 control-label">Type</label>
+                            <label for="gender" class="col-sm-3 control-label" th:text=#{login.role}>Type</label>
                             <div class="col-sm-8">
                                 <select class="form-select mb-3" th:field="*{role}" name="role" id="role" required="required">
                                     <option th:each="role : ${T(be.mkfin.messandcantine.entity.UserRegistered).getRolesForSubscription()}"
@@ -96,7 +96,7 @@
                         <div class="form-group row">
                             <div class="col-sm-8">
                                 <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked onchange="enableButton(value)">
-                                <label class="form-check-label" for="flexCheckChecked">
+                                <label class="form-check-label" for="flexCheckChecked" th:text=#{login.acceptTerm}>
                                     I agree to the Terms and Conditions
                                 </label>
                             </div>

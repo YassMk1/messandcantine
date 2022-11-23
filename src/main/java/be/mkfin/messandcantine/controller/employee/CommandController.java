@@ -230,6 +230,7 @@ public class CommandController {
         payement.setStatus(PayementStatus.REJECTED);
         Basket basket = payement.getBasket();
         basket.setStatus(BasketStatus.FAILED);
+        basket.setCanceled(true);
         payementService.reject(payement);
         model.addAttribute("payement",payement);
         fillImages(basket);

@@ -34,19 +34,19 @@
         </br>
         <div class="card w-75">
             <div class="card-body">
-                <h5 class="card-title">New Availability </h5>
+                <h5 class="card-title">Nouvelle disponibilité</h5>
                 <form  th:action="@{/article/newavail}" th:method="post" class="form-horizontal" th:object="${availability}">
                     <input type="hidden"  th:field="*{id}">
                     <input type="hidden" th:field="*{article}" />
                     <div class="form-group row">
-                        <label for="startLocalDateTime" class="col-sm-3 control-label">Start Date & Time </label>
+                        <label for="startLocalDateTime" class="col-sm-3 control-label">Start Date & Time</label>
                         <div class="col-sm-8">
                             <input  id="startLocalDateTime" class="form-control" type="datetime-local" th:field="*{startLocalDateTime}"/>
                             <span th:if="${#fields.hasErrors('startLocalDateTime')}" th:errors="*{startLocalDateTime}"></span>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="endLocalDateTime" class="col-sm-3 control-label">End Date & Time  </label>
+                        <label for="endLocalDateTime" class="col-sm-3 control-label">End Date & Time</label>
                         <div class="col-sm-8">
                             <input  id="endLocalDateTime" class="form-control" type="datetime-local" th:field="*{endLocalDateTime}"/>
                             <span th:if="${#fields.hasErrors('endLocalDateTime')}" th:errors="*{endLocalDateTime}"></span>
@@ -54,7 +54,7 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="price" class="col-sm-3 control-label">Price </label>
+                        <label for="price" class="col-sm-3 control-label">Prix</label>
                         <div class="col-sm-8">
                             <input id="price" class="form-control" type="number" min="1" step="any" th:field="*{price}" placeholder="10.00" pattern="[1-9]{1}[0-9]{1}"
                                    required />
@@ -62,7 +62,7 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="nbreOrder" class="col-sm-3 control-label">Quantity </label>
+                        <label for="nbreOrder" class="col-sm-3 control-label">Quantité</label>
                         <div class="col-sm-8">
                             <input id="nbreOrder" class="form-control" type="number" min="1"  th:field="*{nbreOrder}" required />
                             <span th:if="${#fields.hasErrors('nbreOrder')}" th:errors="*{nbreOrder}"></span>

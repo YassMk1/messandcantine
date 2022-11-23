@@ -40,14 +40,14 @@
                 </br>
                 <a>End Date & Time  : [[${command.availability.endTime}]]</a>
                 </br>
-                <a>Price : [[${command.availability.price}]] € </a></br>
-                <a>Quantity : [[${command.quantity}]] € </a></br>
+                <a>Prix : [[${command.availability.price}]] € </a></br>
+                <a>Quantité : [[${command.quantity}]] € </a></br>
                 <h5>Total : [[${payement.amount}]] € </h5></br>
                 <form  th:action="@{/command/pay}" th:method="post" class="form-horizontal" th:object="${payement}">
                     <input type="hidden"  th:field="*{id}">
                     <input type="hidden" th:field="*{commande}" />
                     <input type="hidden" th:field="*{amount}" />
-                    <button type="submit" class="btn btn-primary fa-paypal" >Pay With Paypal</button>
+                    <button type="submit" class="btn btn-primary fa-paypal" >Payer avec Paypal</button>
                     <p class="text-muted"> Note: After clicking on the button, you will be directed to a secure
                         gateway for payment. After completing the payment process, you will be redirected back
                         to the website to view details of your order. </p>
